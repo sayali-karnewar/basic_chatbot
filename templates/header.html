@@ -1,0 +1,17 @@
+{% extends "layout.html" %}
+
+{% block bod %}
+
+    <p> helloo girl </p>
+
+    {% block middle %}
+
+        {% for i in content %}
+
+            <p> {{ i }}</p>
+
+        {%endfor%}
+
+    {% endblock %}
+
+{% endblock %}
