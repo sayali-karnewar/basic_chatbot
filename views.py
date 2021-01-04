@@ -4,31 +4,17 @@ import aiohttp_jinja2
 from bson import SON
 
 
-
+#get the opining page
 @aiohttp_jinja2.template("header.html")
 async def header(request):
     return {}
 
-@aiohttp_jinja2.template("header.html")
-async def middle(request):
-    lst = {"content" : ["hi", "sayali"]}
-    return (lst)
+# @aiohttp_jinja2.template("header.html")
+# async def middle(request):
+#     return {"content" : "welcome"}
 
 
-
-@aiohttp_jinja2.template("textbox.html")
-async def textbox(request):
-    return request
-
-@aiohttp_jinja2.template("textbox.html")
-async def submit(request):
-    form = await request.post()
-    text = str(form['textname'])
-    return {"form":text}
-
-
-
-
+#get the form for message input
 @aiohttp_jinja2.template("msg_textbox.html")
 async def msg_input_form(request):
     return {}
@@ -37,15 +23,17 @@ async def msg_input_form(request):
 output_result = []
 
 
+# after submitting the form
 @aiohttp_jinja2.template("msg_textbox.html")
 async def msg_submit_form(request):
-    form = await request.post()
-    text = form['msg_input']
+    form = await request.post()             #get the form
+    text = form['msg_input']                # get the form data
 
-    output_result.append(text)
+    output_result.append(text)              # store the previous data in an array
     
-    db = request.app['db'] 
+    db = request.app['db']                  # request the db
     try:        
+        #check if the input from form matches any of the data in db
         msg_db = await db.command(SON([ ( "distinct", "collection"), ("key","msg"), ("query", {"msg" :text})]))
         try:
             msg_db = msg_db['values'][0]
@@ -57,6 +45,7 @@ async def msg_submit_form(request):
                 
         if msg_db == text:
             try:
+                # if it matches, retrieve the required data from the collection
                 option1 = await db.command(SON([ ( "distinct", "collection"), ("key","option1"), ("query", {"msg" :text})]))
                 option2 = await db.command(SON([ ( "distinct", "collection"), ("key","option2"), ("query", {"msg" :text})]))
                 option1 = option1['values'][0]
