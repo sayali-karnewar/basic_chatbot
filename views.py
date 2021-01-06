@@ -9,10 +9,6 @@ from bson import SON
 async def header(request):
     return {}
 
-# @aiohttp_jinja2.template("header.html")
-# async def middle(request):
-#     return {"content" : "welcome"}
-
 
 #get the form for message input
 @aiohttp_jinja2.template("msg_textbox.html")
